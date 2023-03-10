@@ -19,6 +19,9 @@ const customerSchema = yup.object().shape({
   address: yup.string().min(10).max(30).required("Mention your address..."),
   city: yup.string().required("Mention your city..."),
   zipCode: yup.string().max(8).required("zip code is required..."),
+  addFields: yup
+    .array()
+    .of(yup.string().required("These fields are required...")),
 });
 
 export default customerSchema;

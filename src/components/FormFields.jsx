@@ -1,13 +1,43 @@
 import React from "react";
 import { FieldArray, Form, Formik } from "formik";
 import customerSchema from "../schemas/Validation";
-import { Box, Container, TextField, Grid, Button } from "@mui/material";
+import {
+  Box,
+  Container,
+  TextField,
+  Grid,
+  Button,
+  FormControl,
+} from "@mui/material";
 import MuiTypography from "./MuiTypography";
 import { Add, Delete, Send } from "@mui/icons-material";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+import http from "../axios/Axios";
 
 const FormFields = () => {
-  const submitData = (values) => {
-    console.log("hi", values);
+  const submitData = async (values, resetForm) => {
+    try {
+      if (
+        values.orderId !== "" &&
+        values.customerName !== "" &&
+        values.customerEmail !== "" &&
+        values.address !== "" &&
+        values.zipCode !== "" &&
+        values.city !== ""
+      ) {
+        const data = await http.post("/customers", values);
+        console.log(data);
+        setTimeout(() => {
+          resetForm();
+        }, 2000);
+      } else {
+        alert("Please fill up the fields, Thanks!");
+      }
+    } catch (error) {
+      console.log("Local Server is not working", error);
+    }
   };
   return (
     <Box sx={{ margin: "100px 0px" }}>
@@ -31,26 +61,35 @@ const FormFields = () => {
             zipCode: "",
           }}
           validationSchema={customerSchema}
-          onSubmit={(values, { resetForm }) => {
+          onSubmit={(values) => {
             console.log(values);
-            resetForm();
           }}
         >
-          {({ values, handleSubmit, handleChange, errors, touched }) => (
+          {({
+            values,
+            handleSubmit,
+            handleChange,
+            errors,
+            handleBlur,
+            touched,
+            resetForm,
+          }) => (
             <Form onSubmit={handleSubmit}>
               <Grid container rowSpacing={5} columnSpacing={5}>
                 <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
                   <TextField
                     type="text"
                     name="orderId"
-                    placeholder="Order Id..."
+                    label="Order Id"
                     value={values.orderId}
                     onChange={handleChange}
                     color="primary"
                     fullWidth={true}
                     variant="outlined"
+                    required={true}
+                    onBlur={handleBlur}
                   />
-                  {errors.orderId || touched.orderId ? (
+                  {errors.orderId ? (
                     <MuiTypography
                       text={errors.orderId}
                       variant="subtitle2"
@@ -62,14 +101,16 @@ const FormFields = () => {
                   <TextField
                     type="text"
                     name="customerName"
-                    placeholder="Customer Name..."
+                    label="Customer Name"
                     value={values.customerName}
                     onChange={handleChange}
                     color="primary"
                     fullWidth={true}
                     variant="outlined"
+                    required={true}
+                    onBlur={handleBlur}
                   />
-                  {errors.customerName || touched.customerName ? (
+                  {errors.customerName ? (
                     <MuiTypography
                       text={errors.customerName}
                       variant="subtitle2"
@@ -81,14 +122,16 @@ const FormFields = () => {
                   <TextField
                     type="text"
                     name="customerEmail"
-                    placeholder="Customer Email..."
+                    label="Customer Email"
                     value={values.customerEmail}
                     onChange={handleChange}
                     color="primary"
                     fullWidth={true}
                     variant="outlined"
+                    required={true}
+                    onBlur={handleBlur}
                   />
-                  {errors.customerEmail || touched.customerEmail ? (
+                  {errors.customerEmail ? (
                     <MuiTypography
                       text={errors.customerEmail}
                       variant="subtitle2"
@@ -100,14 +143,16 @@ const FormFields = () => {
                   <TextField
                     type="text"
                     name="address"
-                    placeholder="Address..."
+                    label="Address"
                     value={values.address}
                     onChange={handleChange}
                     color="primary"
                     fullWidth={true}
                     variant="outlined"
+                    required={true}
+                    onBlur={handleBlur}
                   />
-                  {errors.address || touched.address ? (
+                  {errors.address ? (
                     <MuiTypography
                       text={errors.address}
                       variant="subtitle2"
@@ -116,17 +161,29 @@ const FormFields = () => {
                   ) : null}
                 </Grid>
                 <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-                  <TextField
-                    type="text"
-                    name="city"
-                    placeholder="City..."
-                    value={values.city}
-                    onChange={handleChange}
-                    color="primary"
-                    fullWidth={true}
-                    variant="outlined"
-                  />
-                  {errors.city || touched.city ? (
+                  <FormControl fullWidth>
+                    <InputLabel id="demo-simple-select-label">City</InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      label="City"
+                      name="city"
+                      value={values.city}
+                      onChange={handleChange}
+                      color="primary"
+                      fullWidth={true}
+                      required={true}
+                      onBlur={handleBlur}
+                    >
+                      <MenuItem value="Guj">Gujranwala</MenuItem>
+                      <MenuItem value="Lahore">Lahore</MenuItem>
+                      <MenuItem value="Multan">Multan</MenuItem>
+                      <MenuItem value="Isb">Islamabad</MenuItem>
+                      <MenuItem value="Peshawar">Peshawar</MenuItem>
+                      <MenuItem value="Sialkot">Sialkot</MenuItem>
+                    </Select>
+                  </FormControl>
+                  {errors.city ? (
                     <MuiTypography
                       text={errors.city}
                       variant="subtitle2"
@@ -138,14 +195,16 @@ const FormFields = () => {
                   <TextField
                     type="text"
                     name="zipCode"
-                    placeholder="Zip code..."
+                    label="Zip code"
                     value={values.zipCode}
                     onChange={handleChange}
                     color="primary"
                     fullWidth={true}
                     variant="outlined"
+                    required={true}
+                    onBlur={handleBlur}
                   />
-                  {errors.zipCode || touched.zipCode ? (
+                  {errors.zipCode ? (
                     <MuiTypography
                       text={errors.zipCode}
                       variant="subtitle2"
@@ -163,6 +222,24 @@ const FormFields = () => {
                     columnSpacing={5}
                     marginTop={1}
                   >
+                    <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                      <Button
+                        variant="outlined"
+                        startIcon={<Add />}
+                        onClick={() =>
+                          arrayHelpers.push({
+                            productId: "",
+                            productName: "",
+                            productPrice: "",
+                            productQuantity: "",
+                            productTotal: "",
+                          })
+                        }
+                      >
+                        Add Fields
+                      </Button>
+                    </Grid>
+
                     {values.addFields.map((addFields, index) => {
                       return (
                         <React.Fragment key={index}>
@@ -170,60 +247,65 @@ const FormFields = () => {
                             <TextField
                               type="text"
                               name={`addFields.${index}.productId`}
-                              placeholder="product ID..."
+                              label="Product ID"
                               value={addFields.productId}
                               onChange={handleChange}
                               color="primary"
                               fullWidth={true}
                               variant="outlined"
+                              required={true}
                             />
                           </Grid>
                           <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
                             <TextField
                               type="text"
                               name={`addFields.${index}.productName`}
-                              placeholder="Product Name..."
+                              label="Product Name"
                               value={addFields.productName}
                               onChange={handleChange}
                               color="primary"
                               fullWidth={true}
                               variant="outlined"
+                              required={true}
                             />
                           </Grid>
                           <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
                             <TextField
                               type="text"
                               name={`addFields.${index}.productPrice`}
-                              placeholder="Product Price..."
+                              label="Product Price"
                               value={addFields.productPrice}
                               onChange={handleChange}
                               color="primary"
                               fullWidth={true}
                               variant="outlined"
+                              required={true}
                             />
                           </Grid>
                           <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
                             <TextField
                               type="text"
                               name={`addFields.${index}.productQuantity`}
-                              placeholder="Product Quantity..."
+                              label="Product Quantity"
                               value={addFields.productQuantity}
                               onChange={handleChange}
                               color="primary"
                               fullWidth={true}
                               variant="outlined"
+                              required={true}
                             />
                           </Grid>
                           <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
                             <TextField
                               type="text"
                               name={`addFields.${index}.productTotal`}
-                              placeholder="Product Total..."
+                              label="Product Total"
                               value={addFields.productTotal}
                               onChange={handleChange}
                               color="primary"
                               fullWidth={true}
                               variant="outlined"
+                              required={true}
                             />
                           </Grid>
                           <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
@@ -231,6 +313,7 @@ const FormFields = () => {
                               variant="outlined"
                               startIcon={<Delete />}
                               onClick={() => arrayHelpers.remove(index)}
+                              disabled={values.addFields.length === 1}
                             >
                               Delete
                             </Button>
@@ -238,33 +321,18 @@ const FormFields = () => {
                         </React.Fragment>
                       );
                     })}
-
-                    <Button
-                      variant="outlined"
-                      fullWidth={true}
-                      startIcon={<Add />}
-                      onClick={() =>
-                        arrayHelpers.push({
-                          productId: "",
-                          productName: "",
-                          productPrice: "",
-                          productQuantity: "",
-                          productTotal: "",
-                        })
-                      }
-                    >
-                      Add
-                    </Button>
                   </Grid>
                 )}
               />
-              <Button
-                variant="outlined"
-                startIcon={<Send />}
-                onClick={() => submitData(values)}
-              >
-                Submit
-              </Button>
+              <Box marginTop={6}>
+                <Button
+                  variant="outlined"
+                  startIcon={<Send />}
+                  onClick={() => submitData(values, resetForm)}
+                >
+                  Submit Form
+                </Button>
+              </Box>
             </Form>
           )}
         </Formik>
