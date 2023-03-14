@@ -6,9 +6,9 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import http from "../axios/Axios";
+import http from "../api/Api";
 import { Container, Box } from "@mui/material";
-import CircularProgress from "@mui/material/CircularProgress";
+import MuiTypography from "./MuiTypography";
 
 const FormData = () => {
   const [customersList, setCustomersList] = useState([]);
@@ -48,14 +48,10 @@ const FormData = () => {
             </TableHead>
             <TableBody>
               {isLoading ? (
-                <Box
-                  sx={{
-                    padding: "10px 0px",
-                  }}
+                <MuiTypography
+                  text="No Records in a table until order is not created...."
                   align="center"
-                >
-                  <CircularProgress color="primary" />
-                </Box>
+                />
               ) : (
                 customersList.map((list) => {
                   return (

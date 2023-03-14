@@ -1,40 +1,22 @@
 {
   "customers": [
     {
-      "orderId": "1",
-      "customerName": "hammad",
-      "customerEmail": "hammad@gmail.com",
+      "orderId": 1,
+      "customerName": "rizwan",
+      "customerEmail": "rizwan@gmail.com",
       "addFields": [
         {
-          "productId": "1",
-          "productName": "item1",
-          "productPrice": "20",
-          "productQuantity": "20",
-          "productTotal": "200"
+          "productId": 1,
+          "productName": "item3",
+          "productPrice": 20,
+          "productQuantity": 20,
+          "productTotal": 300
         }
       ],
-      "address": "lahore city",
-      "city": "Guj",
-      "zipCode": "12",
+      "address": "lahore pakistan",
+      "city": "Lahore",
+      "zipCode": 5400,
       "id": 1
-    },
-    {
-      "orderId": "2",
-      "customerName": "ali",
-      "customerEmail": "ali@gmail.com",
-      "addFields": [
-        {
-          "productId": "2",
-          "productName": "item2",
-          "productPrice": "200",
-          "productQuantity": "12",
-          "productTotal": "400"
-        }
-      ],
-      "address": "kotli loharan ",
-      "city": "Sialkot",
-      "zipCode": "5666",
-      "id": 2
     }
   ]
 }

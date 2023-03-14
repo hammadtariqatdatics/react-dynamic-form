@@ -1,40 +1,18 @@
 import React from "react";
 import { FieldArray, Form, Formik } from "formik";
 import customerSchema from "../schemas/Validation";
-import {
-  Box,
-  Container,
-  TextField,
-  Grid,
-  Button,
-  FormControl,
-} from "@mui/material";
-import MuiTypography from "./MuiTypography";
+import { Box, Container, Grid, Button, FormControl } from "@mui/material";
 import { Add, Delete, Send } from "@mui/icons-material";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import http from "../axios/Axios";
+import http from "../api/Api";
+import CustomTextFields from "./CustomTextFields";
+import CustomSelectFields from "./CustomSelectFields";
 
 const FormFields = () => {
   const submitData = async (values, resetForm) => {
     try {
-      if (
-        values.orderId !== "" &&
-        values.customerName !== "" &&
-        values.customerEmail !== "" &&
-        values.address !== "" &&
-        values.zipCode !== "" &&
-        values.city !== ""
-      ) {
-        const data = await http.post("/customers", values);
-        console.log(data);
-        setTimeout(() => {
-          resetForm();
-        }, 2000);
-      } else {
-        alert("Please fill up the fields, Thanks!");
-      }
+      const data = await http.post("/customers", values);
+      console.log(data);
+      resetForm();
     } catch (error) {
       console.log("Local Server is not working", error);
     }
@@ -65,20 +43,12 @@ const FormFields = () => {
             console.log(values);
           }}
         >
-          {({
-            values,
-            handleSubmit,
-            handleChange,
-            errors,
-            handleBlur,
-            touched,
-            resetForm,
-          }) => (
+          {({ values, handleSubmit, handleChange, handleBlur, resetForm }) => (
             <Form onSubmit={handleSubmit}>
               <Grid container rowSpacing={5} columnSpacing={5}>
                 <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-                  <TextField
-                    type="text"
+                  <CustomTextFields
+                    type="number"
                     name="orderId"
                     label="Order Id"
                     value={values.orderId}
@@ -89,16 +59,9 @@ const FormFields = () => {
                     required={true}
                     onBlur={handleBlur}
                   />
-                  {errors.orderId ? (
-                    <MuiTypography
-                      text={errors.orderId}
-                      variant="subtitle2"
-                      component="h6"
-                    />
-                  ) : null}
                 </Grid>
                 <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-                  <TextField
+                  <CustomTextFields
                     type="text"
                     name="customerName"
                     label="Customer Name"
@@ -110,16 +73,9 @@ const FormFields = () => {
                     required={true}
                     onBlur={handleBlur}
                   />
-                  {errors.customerName ? (
-                    <MuiTypography
-                      text={errors.customerName}
-                      variant="subtitle2"
-                      component="h6"
-                    />
-                  ) : null}
                 </Grid>
                 <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-                  <TextField
+                  <CustomTextFields
                     type="text"
                     name="customerEmail"
                     label="Customer Email"
@@ -131,16 +87,9 @@ const FormFields = () => {
                     required={true}
                     onBlur={handleBlur}
                   />
-                  {errors.customerEmail ? (
-                    <MuiTypography
-                      text={errors.customerEmail}
-                      variant="subtitle2"
-                      component="h6"
-                    />
-                  ) : null}
                 </Grid>
                 <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-                  <TextField
+                  <CustomTextFields
                     type="text"
                     name="address"
                     label="Address"
@@ -152,18 +101,10 @@ const FormFields = () => {
                     required={true}
                     onBlur={handleBlur}
                   />
-                  {errors.address ? (
-                    <MuiTypography
-                      text={errors.address}
-                      variant="subtitle2"
-                      component="h6"
-                    />
-                  ) : null}
                 </Grid>
                 <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
                   <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">City</InputLabel>
-                    <Select
+                    <CustomSelectFields
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       label="City"
@@ -174,26 +115,12 @@ const FormFields = () => {
                       fullWidth={true}
                       required={true}
                       onBlur={handleBlur}
-                    >
-                      <MenuItem value="Guj">Gujranwala</MenuItem>
-                      <MenuItem value="Lahore">Lahore</MenuItem>
-                      <MenuItem value="Multan">Multan</MenuItem>
-                      <MenuItem value="Isb">Islamabad</MenuItem>
-                      <MenuItem value="Peshawar">Peshawar</MenuItem>
-                      <MenuItem value="Sialkot">Sialkot</MenuItem>
-                    </Select>
-                  </FormControl>
-                  {errors.city ? (
-                    <MuiTypography
-                      text={errors.city}
-                      variant="subtitle2"
-                      component="h6"
                     />
-                  ) : null}
+                  </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-                  <TextField
-                    type="text"
+                  <CustomTextFields
+                    type="number"
                     name="zipCode"
                     label="Zip code"
                     value={values.zipCode}
@@ -204,13 +131,6 @@ const FormFields = () => {
                     required={true}
                     onBlur={handleBlur}
                   />
-                  {errors.zipCode ? (
-                    <MuiTypography
-                      text={errors.zipCode}
-                      variant="subtitle2"
-                      component="h6"
-                    />
-                  ) : null}
                 </Grid>
               </Grid>
               <FieldArray
@@ -244,8 +164,8 @@ const FormFields = () => {
                       return (
                         <React.Fragment key={index}>
                           <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-                            <TextField
-                              type="text"
+                            <CustomTextFields
+                              type="number"
                               name={`addFields.${index}.productId`}
                               label="Product ID"
                               value={addFields.productId}
@@ -257,7 +177,7 @@ const FormFields = () => {
                             />
                           </Grid>
                           <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-                            <TextField
+                            <CustomTextFields
                               type="text"
                               name={`addFields.${index}.productName`}
                               label="Product Name"
@@ -270,8 +190,8 @@ const FormFields = () => {
                             />
                           </Grid>
                           <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-                            <TextField
-                              type="text"
+                            <CustomTextFields
+                              type="number"
                               name={`addFields.${index}.productPrice`}
                               label="Product Price"
                               value={addFields.productPrice}
@@ -283,8 +203,8 @@ const FormFields = () => {
                             />
                           </Grid>
                           <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-                            <TextField
-                              type="text"
+                            <CustomTextFields
+                              type="number"
                               name={`addFields.${index}.productQuantity`}
                               label="Product Quantity"
                               value={addFields.productQuantity}
@@ -296,8 +216,8 @@ const FormFields = () => {
                             />
                           </Grid>
                           <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
-                            <TextField
-                              type="text"
+                            <CustomTextFields
+                              type="number"
                               name={`addFields.${index}.productTotal`}
                               label="Product Total"
                               value={addFields.productTotal}
