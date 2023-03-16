@@ -1,0 +1,22 @@
+{
+  "customers": [
+    {
+      "orderId": 1,
+      "customerName": "rizwan",
+      "customerEmail": "rizwan@gmail.com",
+      "addFields": [
+        {
+          "productId": 1,
+          "productName": "item3",
+          "productPrice": 20,
+          "productQuantity": 20,
+          "productTotal": 300
+        }
+      ],
+      "address": "lahore pakistan",
+      "city": "Lahore",
+      "zipCode": 5400,
+      "id": 1
+    }
+  ]
+}

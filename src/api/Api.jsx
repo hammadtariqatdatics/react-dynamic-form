@@ -2,7 +2,7 @@ import axios from "axios";
 
 // creating instance of axios
 const http = axios.create({
-  baseURL: "https://rickandmortyapi.com/api",
+  baseURL: "http://localhost:5000",
   // headers: {
   //   Accept: "application/json",
   // },

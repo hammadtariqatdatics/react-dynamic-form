@@ -1,8 +1,8 @@
 import React from "react";
-import Characters from "./characters/Characters";
+import Form from "./form/Form";
 
 const App = () => {
-  return <Characters />;
+  return <Form />;
 };
 
 export default App;
